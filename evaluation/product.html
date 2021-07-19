@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+    <title>Jewellery Store</title>
+    <style>
+        #products {
+            display: grid;
+            padding: 5%;
+            grid-template-columns: repeat(4, 20%);
+            gap: 5%;
+        }
+
+        img {
+            width: 100%;
+            border: solid 2px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Online Jewellery Store</h1>
+    <form id="myform" onsubmit="storeLocation()">
+        <input type="text" placeholder="Name" id="name">
+        <input type="text" placeholder="Url" id="url">
+        <input type="number" placeholder="Price" id="price">
+        <input type="submit">
+    </form> <button onclick="showVisited()">cart</button>
+    <div id="products">
+    </div>
+    <script>
+        function storeLocation() {
+
+            let form = document.getElementById("myform");
+            let name = form.name.value;
+            let url = form.url.value;
+            let price = form.price.value;
+
+
+            let location = {
+                name,
+                url,
+                price,
+            }
+            //console.log(location);
+            let arr;
+            arr = localStorage.getItem("locations");
+            if (arr == null) {
+                arr = [];
+            }
+            else {
+                arr = JSON.parse(localStorage.getItem("locations"))
+            }
+            arr.push(location);
+            localStorage.setItem("locations", JSON.stringify(arr));
+        }
+
+        function addProduct(el) {
+            var products = document.getElementById("products");
+            var div = document.createElement("div");
+
+            var p = document.createElement("p");
+            p.innerHTML = el.name;
+
+            var image = document.createElement("img");
+            image.src = el.url;
+
+            var price_p = document.createElement("p");
+            price_p.innerHTML = el.price;
+
+            var but = document.createElement("button")
+            but.innerHTML = "Add to Cart";
+            but.addEventListener("click", function () {
+                addtoVisted(el);
+
+            });
+
+            div.append(image, p, price_p, but);
+            products.append(div);
+        }
+        function showlocations() {
+            let data = JSON.parse(localStorage.getItem("locations"));
+            data.forEach(function (el) {
+                addProduct(el);
+            });
+        }
+        showlocations();
+        function addtoVisted(obj) {
+            let location = {
+                name,
+                url,
+                price,
+            }
+            //console.log(location);
+            let arr;
+            arr = localStorage.getItem("cart");
+            if (arr == null) {
+                arr = [];
+            }
+            else {
+                arr = JSON.parse(localStorage.getItem("cart"))
+            }
+            arr.push(obj);
+            localStorage.setItem("cart", JSON.stringify(arr));
+
+        }
+
+        function showVisited() {
+            window.location.href = 'cart.html'
+        }
+
+    </script>
+</body>
+
+</html>
